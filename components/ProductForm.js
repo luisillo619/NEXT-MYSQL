@@ -1,50 +1,58 @@
 import useCreate from "@/hooks/useCreate";
 
-const initialForm = {
+const INITIAL_PRODUCT_DATA = {
   name: "",
   price: "",
   description: "",
 };
 
-const validateForm = (form) => {
+const REGEX_TEXT = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
+const REGEX_NUMBER = /^[0-9]+$/;
+
+const validateForm = (formData) => {
   const errors = {};
-  const regexText = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
-  const regexNumber = /^[0-9]+$/;
 
   // name
-  if (!form.name.trim()) {
+  if (!formData.name.trim()) {
     errors.name = "Debes ingresar el nombre del producto";
-  } else if (!regexText.test(form.name.trim())) {
+  } else if (!REGEX_TEXT.test(formData.name.trim())) {
     errors.name =
       "Debes ingresar un texto sin numeros ni caracteres especiales";
-  } else if (form.name.trim().length > 30) {
+  } else if (formData.name.trim().length > 30) {
     errors.name = "El nombre del producto debe contener menos de 30 caracteres";
   }
 
   // price
-  if (!form.price.trim()) {
+  if (!formData.price.trim()) {
     errors.price = "Debes ingresar el precio del producto";
-  } else if (!regexNumber.test(form.price.trim())) {
+  } else if (!REGEX_NUMBER.test(formData.price.trim())) {
     errors.price = "Debes ingresar un numero";
-  } else if (form.price.trim().length > 10) {
+  } else if (formData.price.trim().length > 10) {
     errors.price = "El precio no puede tener mas de 10 caracteres";
   }
 
   // description
-  if (!form.description.trim()) {
+  if (!formData.description.trim()) {
     errors.description = "Debes ingresar la descripcion del producto";
-  } else if (!regexText.test(form.description.trim())) {
+  } else if (!REGEX_TEXT.test(formData.description.trim())) {
     errors.description =
       "Debes ingresar un texto sin numeros ni caracteres especiales";
-  } else if (form.description.trim().length > 400) {
+  } else if (formData.description.trim().length > 400) {
     errors.description = "La descripcion no puede tener mas de 400 caracteres";
   }
-  return errors;
+
+  return errors
 };
 
 export function ProductForm() {
-  const { form, handleChange, handleBlur, handleSubmit, loading, errors } =
-    useCreate(initialForm, validateForm);
+  const {
+    form,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    isLoading,
+    errors,
+  } = useCreate(INITIAL_PRODUCT_DATA, validateForm);
   return (
     <div className="bg-gray-300">
       <form onSubmit={handleSubmit}>
@@ -77,8 +85,8 @@ export function ProductForm() {
           onBlur={handleBlur}
         ></textarea>
         {errors && errors.description}
-        <button disabled={loading}>Guardar producto</button>
-        {loading && "CARGANDO"}
+        <button disabled={isLoading}>Guardar producto</button>
+        {isLoading && "CARGANDO"}
       </form>
     </div>
   );

@@ -7,7 +7,7 @@ function useCreate(initialForm, validateForm) {
   const router = useRouter();
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getProduct = async (id) => {
@@ -53,7 +53,7 @@ function useCreate(initialForm, validateForm) {
     const formErrors = validateForm(form);
     setErrors(formErrors);
     if (Object.keys(formErrors).length === 0) {
-      setLoading(true);
+      setIsLoading(true);
 
       try {
         if (router.query?.id) {
@@ -61,7 +61,7 @@ function useCreate(initialForm, validateForm) {
             `/api/products/${router.query?.id}`,
             form
           );
-          setLoading(false);
+          setIsLoading(false);
           if (res.status === 204) {
             Swal.fire({
               icon: "success",
@@ -81,7 +81,7 @@ function useCreate(initialForm, validateForm) {
             description: form.description,
           });
           setForm(initialForm);
-          setLoading(false);
+          setIsLoading(false);
           if (res.status === 200) {
             Swal.fire({
               icon: "success",
@@ -97,7 +97,7 @@ function useCreate(initialForm, validateForm) {
         }
       } catch (error) {
         setForm(initialForm);
-        setLoading(false);
+        setIsLoading(false);
         Swal.fire({
           icon: "error",
           title: "Error al crear o midificar el Producto",
@@ -114,7 +114,7 @@ function useCreate(initialForm, validateForm) {
     handleChange,
     handleBlur,
     handleSubmit,
-    loading,
+    isLoading,
     errors,
   };
 }

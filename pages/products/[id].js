@@ -4,8 +4,6 @@ import { useState } from "react";
 import { NoNavLayout } from "../../components/NoNavLayout";
 import Swal from "sweetalert2";
 
-
-
 function ProductPage({ product, statusCode }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -73,12 +71,9 @@ function ProductPage({ product, statusCode }) {
 
 export const getServerSideProps = async (context) => {
   try {
-    console.log("pepe")
-    console.log(process.env.NEXT_PUBLIC_API_URL)
     const { data } = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/products/${context.params.id}`
     );
-    console.log(data)
     return {
       props: { product: data },
     };

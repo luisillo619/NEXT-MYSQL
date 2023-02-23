@@ -20,14 +20,13 @@ export default async function handlerProductsId(req, res) {
 const getProduct = async (req, res) => {
   try {
     const { id } = req.query;
-    console.log(id)
     const [[result]] = await pool.query("SELECT * FROM product WHERE id = ?", [
       id,
     ]);
     if (result) {
       return res.status(200).send(result);
     } else {
-      return res.status(404).json({ error: "Product not found" });
+      return res.status(404).json({ error: "Producto no encontrado" });
     }
   } catch (error) {
     console.error(error);
