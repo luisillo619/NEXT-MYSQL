@@ -6,10 +6,12 @@ import Swal from "sweetalert2";
 
 export const getServerSideProps = async (context) => {
   try {
+    console.log("pepe")
+    console.log(process.env.NEXT_PUBLIC_API_URL)
     const { data } = await axios.get(
-      `http://localhost:3000/api/products/${context.params.id}`
+      `${process.env.NEXT_PUBLIC_API_URL}/products/${context.params.id}`
     );
-
+console.log(data)
     return {
       props: { product: data },
     };
