@@ -4,27 +4,7 @@ import { useState } from "react";
 import { NoNavLayout } from "../../components/NoNavLayout";
 import Swal from "sweetalert2";
 
-export const getServerSideProps = async (context) => {
-  try {
-    console.log("pepe")
-    console.log(process.env.NEXT_PUBLIC_API_URL)
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/products/${context.params.id}`
-    );
-console.log(data)
-    return {
-      props: { product: data },
-    };
-  } catch (error) {
-    console.log(error);
-    const statusCode = error.response ? error.response.status : 500;
-    if (statusCode === 404) {
-      return { notFound: true };
-    } else {
-      return { props: { statusCode } };
-    }
-  }
-};
+
 
 function ProductPage({ product, statusCode }) {
   const [loading, setLoading] = useState(false);
@@ -90,5 +70,27 @@ function ProductPage({ product, statusCode }) {
     return <div>Producto no encontrado {statusCode}</div>;
   }
 }
+
+export const getServerSideProps = async (context) => {
+  try {
+    console.log("pepe")
+    console.log(process.env.NEXT_PUBLIC_API_URL)
+    const { data } = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/products/${context.params.id}`
+    );
+    console.log(data)
+    return {
+      props: { product: data },
+    };
+  } catch (error) {
+    console.log(error);
+    const statusCode = error.response ? error.response.status : 500;
+    if (statusCode === 404) {
+      return { notFound: true };
+    } else {
+      return { props: { statusCode } };
+    }
+  }
+};
 
 export default ProductPage;
